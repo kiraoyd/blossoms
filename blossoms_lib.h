@@ -60,3 +60,41 @@ void init_blossoms(struct Point array[], int size){
             array[i] = init;
          }
 }
+
+
+//Draw all blossoms stored in an array of coordinates
+void draw_blossoms(struct Point blossoms[], int size, int radius){
+    int index = 0;
+    while(index < size){
+        G_fill_circle(blossoms[index].x, blossoms[index].y, radius);
+        index++;
+    }
+}
+
+//This needs to randomly go through my point array of blossomm coordinates and select some number of indicies
+//that we want to change the y values for
+//Then stick those values in a second array
+//Then we roll through the second array, and change the y-values for it, and draw
+//repeat until all y values are in the second array
+//Then repeat the draw until all values in the second arrray reach 0
+
+void random_indicies(struct Point blossoms[], struct Point *to_move[], int blossom_num, int next_index, int num_select){
+    int index = 0;
+          //randomly select num_select number of indicies
+    while(index < blossom_num){
+        //if this index is selected, then take the point stored there and add to to_move at next_index
+
+        index++;
+    }
+    //we will have access to to_move outside this function
+}
+
+void fall(struct Point blossoms[], int blossom_num){
+    struct Point to_move[blossom_num];
+    int next_index = 0;
+    int num_select;
+
+    //loop over blossom_num until to_move is full
+    //Randomly generate how many num_select
+
+}

@@ -1,4 +1,4 @@
-/* To run: cc  p_tree.c   -lm  -lX11 */
+/* To run: cc  tree.c   -lm  -lX11 */
 
 #include  "FPToolkit.c"
 //#include <stdio.h>
@@ -70,10 +70,12 @@ int main(){
    int radius_size_front = 0;
    int radius_size_back = 0;
 
-    //animate blossoms on front tree
+    //animate blossoms growing on front tree
+    //We will get the final radius value back
    radius_size_front = grow_blossoms(blossoms, radius, target, increment, size);
 
-    //animate blossoms on back tree
+    //animate blossoms growing on back tree
+    //We will get the final radius value back
     radius_size_back = grow_blossoms(blossoms2, radius, target, increment, size);
 
     struct RGB color = {0.4, 0.4, 0.4};
@@ -85,7 +87,7 @@ int main(){
     int test = 5;
     fall(blossoms, size, p0, p1, distance, percent, depth, test);
 
-    //TODO cmaybe it would be better to not split up the animations, and instead just write the functions out to do the work within a frame loop
+    //TODO maybe it would be better to not split up the animations, and instead just write the functions out to do the work within a frame loop
 
 
 
