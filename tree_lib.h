@@ -233,37 +233,8 @@ void tree (struct Point p0, struct Point p1, double distance, double percent, do
 
     //Initial blossoms
     if(depth == 1){
-        /*
-        //adjust colors to be one of three shades of pink
-        int random = rand() % 3; //make 3 random numbers from 0 -2
-
-        if(random == 0){
-            G_rgb(0.87,0.647,0.643);//hot pink
-        }
-        else if (random == 1){
-            G_rgb(0.95,0.76,0.76);//pink
-        } else {
-            G_rgb(0.98,0.85,0.86);//light pink
-        }
-        //draw circles at the end points of each final square
-        G_fill_circle(p3.x, p3.y, 5);
-        G_fill_circle(p4.x, p4.y, 5);
-        G_fill_circle(p5.x, p5.y, 5);
-        G_fill_circle(p6.x, p6.y, 5);
-
-        //populate array
-        blossoms[(*index)] = p3;
-        (*index)++;
-        blossoms[(*index)] = p4;
-        (*index)++;
-        blossoms[(*index)] = p5;
-        (*index)++;
-        blossoms[(*index)] = p6;
-        (*index)++;
-        */
         int radius = 5;
         blossom_draw_save(blossoms, index, p3, p4, p5, p6, radius);
-
     }
 
     depth -= 1;

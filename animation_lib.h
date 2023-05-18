@@ -36,81 +36,70 @@ int wilt(struct Point blossoms[], int start_radius, int target, int increment, i
     return start_radius;
 }
 
-    //TODO can we make the blossoms fall at different rates?
+
 void fall(struct Point blossoms[], int size, struct Point p0, struct Point p1, double distance, double percent, double depth, int radius){
     //animate blossoms falling from front tree
     bool hanging = true;
+
     //make array of indicies big enough to hold all the available ones
     int indicies[size];
     //fill it with values that match the actual indicies
     for(int i = 0; i<size; i++){
          indicies[i] = i;
     }
-    //we don't want to actually alter the size arg, so make a temp instead
-    int available = size;
-    printf("Blossoms we have are: %d ", available);
-    int to_fall[size]; //array that will hold which indicies to go to and animate in blossoms, each loop
+
+    //we don't want to actually alter the size arg, as it holds onto the total number of blossoms that exist, so make a temp instead
+    int available = size; //this will help track how many blossoms are still on the tree
+
+    int to_fall[size]; //array that will hold which indicies to go to and animate in blossoms, will eventually hold ALL blossoms
     //initialize with -1 values to indicate empty spots
     for(int i=0; i<size; i++){
         to_fall[i] = -1;
     }
-    int next_index = 0;
 
-    int test = 0;
-    //for each blossom, until we reach the ground redraw the blossoms at a lower point
+    //for each blossom, until we reach the ground, redraw the blossoms at a lower point
+    int next_index = 0;
     while(hanging){
         G_rgb(0.3, 0.3, 0.3);
         G_clear();
         redraw_tree_no_blossoms(p0, p1, distance, percent, depth);
+
         //time to make the blossoms fall
-        hanging = false;
-        /*
-        int i = 0;
-        while(i  < size){
-            blossoms[i].y = blossoms[i].y - 3;
-            i++;
-
-        }
-        //Draw all blossoms at once
-       int blossom = 0;
-       while(blossom  < size){
-            G_rgb(0.98,0.85,0.86);
-             G_fill_circle(blossoms[blossom].x, blossoms[blossom].y, radius);
-             blossom++;
+       hanging = false; //assume all blossoms have fallen
+       //which blossoms should fall? We will fill up to_fall each frame with a new blossom to join the fall
+       int total_to_fall = 1;
+       if(next_index < size){
+            next_index = update_blossoms_to_move(blossoms, to_fall, next_index, indicies, &available, total_to_fall);
        }
-       */
-       //which blossoms should fall?
-       int total_to_fall = 20;
-       update_blossoms_to_move(blossoms, to_fall, &next_index, indicies, &available, total_to_fall);
 
-       //now blossoms should be altered as we want it to be, draw all the blossoms
+       // draw all the blossoms: those in to_fall move down, the others draw in the tree at their initial spots
        int index = 0;
        while(index < size){
-            printf("In loop");
           //first be sure we draw all the stationary blossoms
-          int draw = is_falling(to_fall, index);
+          int draw = is_falling(to_fall, index, next_index);
+          if(blossoms[index].y <= 0){
+                //any blossom that has reached the ground should be drawn as stationary
+                draw = 0;
+          }
           if(draw == 0){ //index not in the to_fall list
-          //printf("stationary, ");
-            G_rgb(0.98,0.85,0.86);
-            G_fill_circle(blossoms[index].x, blossoms[index].y, radius);
+              G_rgb(0.98,0.85,0.86);
+              G_fill_circle(blossoms[index].x, blossoms[index].y, radius);
           }
           //then change and draw all the in motions falling ones
           else{
-            printf("fall, ");
-            blossoms[index].y -= 3.0;
-            G_rgb(0.98,0.85,0.86);
-            G_fill_circle(blossoms[index].x, blossoms[index].y, radius);
+              blossoms[index].y -= 5.0;
+              G_rgb(0.98,0.85,0.86);
+              G_fill_circle(blossoms[index].x, blossoms[index].y, radius);
           }
 
-          //update hanging to be true as long as at least one blossom hasn't reached the ground
+          //update hanging to be true as long if at least one blossom hasn't reached the ground, keeps us in the loop
           if(blossoms[index].y > 0){
              hanging = true;
           }
           index++;
        }
-
         G_wait_key();
-        test++;
+
     }
-    printf("Went through draw loop: %i times", test);
+
 }

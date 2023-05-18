@@ -33,7 +33,7 @@ int main(){
     double distance = sqrt((p1.x - p0.x) * (p1.x - p0.x) + (p1.y - p0.y) * (p1.y - p0.y));
     //set how far from p0 we want the third point to lie
     double percent = 0.4;
-    double depth = 4.0;
+    double depth = 7.0;
 
 
     //initial points for a second tree
@@ -63,6 +63,7 @@ int main(){
 
     //calculate and draw trees recursively
     tree(p0, p1, distance, percent, depth, blossoms, index); //front
+    //TODO try drawing the blossoms here instead of in the tree function
     tree(p2,p3, distance2, percent2, depth2, blossoms2, index2); //back
 
    int radius = 5;
@@ -74,9 +75,10 @@ int main(){
     //what is the size of the blossoms array?
     int blossom_num = *index;
     int blossom_num2 = *index2;
+    printf("size of blossoms: %d, size of blossoms2: %d", blossom_num, blossom_num2);
     //animate blossoms growing on front tree
     //We will get the final radius value back
-   radius_size_front = grow_blossoms(blossoms, radius, target, increment, blossom_num);
+    radius_size_front = grow_blossoms(blossoms, radius, target, increment, blossom_num);
 
     //animate blossoms growing on back tree
     //We will get the final radius value back
@@ -88,10 +90,25 @@ int main(){
     //TODO
     //int shrunk = wilt(blossoms, radius_size_front, target2, inc, size, color, p0, p1, distance, percent, depth);
 
-    int test = 5;
-    fall(blossoms, blossom_num, p0, p1, distance, percent, depth, test);
 
-    //TODO maybe it would be better to not split up the animations, and instead just write the functions out to do the work within a frame loop
+    fall(blossoms, blossom_num, p0, p1, distance, percent, depth, radius_size_front);
+    //TODO how to save the state of the front tree to redraw it as the second runs
+    //grow leaves
+    /*
+    int c = 0;
+    int frames = 10;
+    while(c < frames){
+        G_rgb(0.3, 0.3, 0.3);
+        G_clear();
+        redraw_tree_no_blossoms(p0, p1, distance, percent, depth);
+        draw_blossoms(blossoms, size, radius_size_front);
+        tree(p0, p1, distance, percent, depth, blossoms, index); //front
+        draw_leaves(blossoms, size, c);
+        G_wait_key();
+        c++;
+    }
+    */
+    //fall(blossoms2, blossom_num2, p2, p3, distance2, percent2, depth2, radius_size_back);
 
 
 
