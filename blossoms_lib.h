@@ -1,3 +1,7 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
 struct Point {
     double x, y;
 };
@@ -78,23 +82,74 @@ void draw_blossoms(struct Point blossoms[], int size, int radius){
 //repeat until all y values are in the second array
 //Then repeat the draw until all values in the second arrray reach 0
 
-void random_indicies(struct Point blossoms[], struct Point *to_move[], int blossom_num, int next_index, int num_select){
-    int index = 0;
-          //randomly select num_select number of indicies
-    while(index < blossom_num){
-        //if this index is selected, then take the point stored there and add to to_move at next_index
+//TODO getting repeats in random number generation!
+//get the size of indicies before calling this function
+void select_random_indicies(int random[], int indicies[], int *available, int total){
+    int count = 0;
+    int last_index = *available -1;
+    //for the requested number of random indicies to gather
+    while (count < total){
+        int random_i = (rand() % (*available + 1)); //get a random number in the range of how big indicies is
+        printf("RANDOM NUM: %d ", random_i);
+        random[count] = random_i;
+        if(random_i != last_index){
+            //replace the value we just grabbed at the random index, with the value in the last index
+            indicies[random_i] = indicies[last_index];
+        }
+        //always shrink the indicies available to grab, by 1, so that next time this gets called, last_index is one less
+        *available -= 1;
+        count++;
+        }
 
+    printf("Testing to see what we got in random IN FUNCTION: ");
+        for(int k = 0; k < total; k++){
+             printf("%d ", random[k]);
+        }
+}
+
+//I need to have a list of blossoms that have been selected to fall, so the ones that are not yet moving, stay still
+
+
+void update_blossoms_to_move(struct Point blossoms[], int to_fall[], int *next_index, int indicies[], int *available, int total_to_fall){
+    int index = 0;
+    int random[total_to_fall];
+    for(int i = 0; i < total_to_fall; i++){
+        random[i] = 0;
+    }
+    //randomly select num_select number of indicies
+    select_random_indicies(random, indicies, available, total_to_fall);
+
+        printf("Testing to see what we got in random ");
+        for(int k = 0; k < index; k++){
+            printf("%d ", random[k]);
+        }
+    //now we have access to both the filled random list, and the updated indicies list
+    //available has shrunk as well
+    //Now we want to update the to_fall list with what we got from random
+    int random_len = sizeof(&random)/sizeof(random[0]);
+    while (index < random_len){
+        //update just the blossom at each index of the random array of index values
+        to_fall[*next_index] = random[index];
+        *next_index++;
         index++;
     }
-    //we will have access to to_move outside this function
+
+    printf("Testing to see what we got in to_fall ");
+    for(int j = 0; j < index; j++){
+        printf("%d ", to_fall[j]);
+    }
 }
 
-void fall(struct Point blossoms[], int blossom_num){
-    struct Point to_move[blossom_num];
-    int next_index = 0;
-    int num_select;
-
-    //loop over blossom_num until to_move is full
-    //Randomly generate how many num_select
-
+int is_falling(int to_fall[], int blossom){
+    int length = sizeof(&to_fall)/sizeof(to_fall[0]);
+    int count = 0;
+    int found = 0;
+    while(count < length){
+        if (to_fall[count] == blossom){
+            found = 1;
+        }
+        count++;
+    }
+    return found;
 }
+
