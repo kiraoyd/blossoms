@@ -33,7 +33,7 @@ int main(){
     double distance = sqrt((p1.x - p0.x) * (p1.x - p0.x) + (p1.y - p0.y) * (p1.y - p0.y));
     //set how far from p0 we want the third point to lie
     double percent = 0.4;
-    double depth = 7.0;
+    double depth = 6.0;
 
 
     /*TODO hold on second tree for now
@@ -86,7 +86,8 @@ int main(){
 
     //animate blossoms growing on front tree
     //We will get the final radius value back
-    radius_size_front = grow_blossoms(blossoms, radius, target, increment, blossom_num);
+    //TODO don't need to grow while using flower turtle
+    //radius_size_front = grow_blossoms(blossoms, radius, target, increment, blossom_num);
 
     /* TODO hold on back tree
     //animate blossoms growing on back tree
@@ -119,7 +120,13 @@ int main(){
     */
     //fall(blossoms2, blossom_num2, p2, p3, distance2, percent2, depth2, radius_size_back);
 
-
+    //reset blossoms back to ends of tree
+    index_val = 0;
+    index = &index_val;
+    tree_save_blossoms(p0, p1, distance, percent, depth, blossoms, index); //front
+    draw_leaves(blossoms, *index, 5);
+    grow_blossoms(blossoms, 5.0, 75, 0.5, *index);
+    G_wait_key();
 
 
     /* BEGIN SETDOWN */

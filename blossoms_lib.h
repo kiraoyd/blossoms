@@ -6,8 +6,6 @@ struct RGB {
     double r, g, b;
 };
 
-
-
 void blossom_draw_save(struct Point blossoms[], int *index, struct Point p1, struct Point p2, struct Point p3, struct Point p4, int initial_radius ){
         //adjust colors to be one of three shades of pink
         int random = rand() % 3; //make 3 random numbers from 0 -2
@@ -21,9 +19,8 @@ void blossom_draw_save(struct Point blossoms[], int *index, struct Point p1, str
             G_rgb(0.98,0.85,0.86);//light pink
         }
 
-        //TODO maybe we need to draw outside this function, all at once when we have the populated blossoms array
-        //draw circles at the end points of each final square
         /* TODO trying with blossoms art
+        //draw circles at the end points of each final square
         G_fill_circle(p1.x, p1.y, initial_radius);
         G_fill_circle(p2.x, p2.y, initial_radius);
         G_fill_circle(p3.x, p3.y, initial_radius);
@@ -47,6 +44,20 @@ void blossom_draw_save(struct Point blossoms[], int *index, struct Point p1, str
 
 }
 
+void blossom_save(struct Point blossoms[], int *index, struct Point p1, struct Point p2, struct Point p3, struct Point p4, int initial_radius ){
+
+        //populate array
+        blossoms[(*index)] = p1;
+        (*index)++;
+        blossoms[(*index)] = p2;
+        (*index)++;
+        blossoms[(*index)] = p3;
+        (*index)++;
+        blossoms[(*index)] = p4;
+        (*index)++;
+
+}
+
 //Initialize array of blossoms with empty points
 void init_blossoms(struct Point array[], int size){
          struct Point init = {0,0};
@@ -54,7 +65,6 @@ void init_blossoms(struct Point array[], int size){
             array[i] = init;
          }
 }
-
 
 //Draw all blossoms stored in an array of coordinates
 void draw_blossoms(struct Point blossoms[], int size, int radius){
@@ -69,11 +79,11 @@ void draw_blossoms(struct Point blossoms[], int size, int radius){
     }
 }
 
-//Draw all blossoms stored in an array of coordinates
+//Draw all leaves stored in an array of coordinates
 void draw_leaves(struct Point blossoms[], int size, int radius){
     int index = 0;
     while(index < size){
-        G_rgb(0,1,0);
+        G_rgb(74.0/255.0, 103.0/255.0, 65.0/255.0);
         G_fill_circle(blossoms[index].x, blossoms[index].y, radius);
         index++;
     }
@@ -87,7 +97,6 @@ void select_random_indicies(int random[], int indicies[], int *available, int to
     while (count < total){
             int last_index = *available -1;
             int random_i = (rand() % (*available-1)); //get a random number in the range of how big indicies is
-            printf("RANDOM NUM: %d ", random_i);
             random[count] = indicies[random_i];
             if(random_i != last_index){
                 //replace the value we just grabbed at the random index, with the value in the last index
@@ -100,9 +109,6 @@ void select_random_indicies(int random[], int indicies[], int *available, int to
     }
 
 }
-
-//I need to have a list of blossoms that have been selected to fall, so the ones that are not yet moving, stay still
-
 
 int update_blossoms_to_move(struct Point blossoms[], int to_fall[], int next_index, int indicies[], int *available, int total_to_fall){
     int index = 0;
@@ -118,12 +124,9 @@ int update_blossoms_to_move(struct Point blossoms[], int to_fall[], int next_ind
         //available has shrunk as well
         //Now we want to update the to_fall list with what we got from random
         //go through random, and add what's there to the next available spot in to_fall
-        printf("next_index: %d \n", next_index);
-
         while (index < total_to_fall){
                 //update just the blossom at each index of the random array of index values
                 to_fall[next_index] = random[index];
-                printf("Random number added: %d \n", random[index]);
                 next_index++;
                 index++;
         }
@@ -137,13 +140,6 @@ int update_blossoms_to_move(struct Point blossoms[], int to_fall[], int next_ind
             index++;
         }
     }
-/*
-    printf("Testing to see what we got in to_fall: ");
-    for(int j = 0; j < next_index; j++){
-        printf("%d ", to_fall[j]);
-    }
-    printf("\n");
-*/
     return next_index;
 }
 

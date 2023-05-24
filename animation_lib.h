@@ -3,14 +3,13 @@
 
 
 //Increase size of all blossoms and draw
-int grow_blossoms(struct Point blossoms[], int radius, int target, int increment, int size ){
+int grow_blossoms(struct Point blossoms[], double radius, int target, double increment, int size ){
     while (radius < target){
         int count = 0;
         while(count < size){
-            /*TODO trying with flower
+            G_rgb(74.0/255.0, 103.0/255.0, 65.0/255.0);
             G_fill_circle(blossoms[count].x, blossoms[count].y, radius);
-            */
-            draw_flower(blossoms[count].x, blossoms[count].y, 1);
+            //draw_flower(blossoms[count].x, blossoms[count].y, 1);
             count++;
         }
         G_wait_key();
@@ -43,7 +42,7 @@ int wilt(struct Point blossoms[], int start_radius, int target, int increment, i
 void fall(struct Point blossoms[], int size, struct Point p0, struct Point p1, double distance, double percent, double depth, int radius){
     //animate blossoms falling from front tree
     bool hanging = true;
-
+    double rate = 20.0;
     //make array of indicies big enough to hold all the available ones
     int indicies[size];
     //fill it with values that match the actual indicies
@@ -93,7 +92,7 @@ void fall(struct Point blossoms[], int size, struct Point p0, struct Point p1, d
           }
           //then change and draw all the in motions falling ones
           else{
-              blossoms[index].y -= 5.0;
+              blossoms[index].y -= rate;
               G_rgb(0.98,0.85,0.86);
               /* TODO trying with flower
               G_fill_circle(blossoms[index].x, blossoms[index].y, radius);
@@ -112,3 +111,4 @@ void fall(struct Point blossoms[], int size, struct Point p0, struct Point p1, d
     }
 
 }
+
