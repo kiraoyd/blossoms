@@ -7,7 +7,10 @@ int grow_blossoms(struct Point blossoms[], int radius, int target, int increment
     while (radius < target){
         int count = 0;
         while(count < size){
+            /*TODO trying with flower
             G_fill_circle(blossoms[count].x, blossoms[count].y, radius);
+            */
+            draw_flower(blossoms[count].x, blossoms[count].y, 1);
             count++;
         }
         G_wait_key();
@@ -83,13 +86,19 @@ void fall(struct Point blossoms[], int size, struct Point p0, struct Point p1, d
           }
           if(draw == 0){ //index not in the to_fall list
               G_rgb(0.98,0.85,0.86);
+              /* TODO trying with flower
               G_fill_circle(blossoms[index].x, blossoms[index].y, radius);
+              */
+              draw_flower(blossoms[index].x, blossoms[index].y, 1);
           }
           //then change and draw all the in motions falling ones
           else{
               blossoms[index].y -= 5.0;
               G_rgb(0.98,0.85,0.86);
+              /* TODO trying with flower
               G_fill_circle(blossoms[index].x, blossoms[index].y, radius);
+              */
+              draw_flower(blossoms[index].x, blossoms[index].y, 1);
           }
 
           //update hanging to be true as long if at least one blossom hasn't reached the ground, keeps us in the loop

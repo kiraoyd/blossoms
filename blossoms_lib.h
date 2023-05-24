@@ -1,10 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-
-struct Point {
-    double x, y;
-};
+#include "flower_lib.h"
 
 struct RGB {
     double r, g, b;
@@ -27,10 +23,17 @@ void blossom_draw_save(struct Point blossoms[], int *index, struct Point p1, str
 
         //TODO maybe we need to draw outside this function, all at once when we have the populated blossoms array
         //draw circles at the end points of each final square
+        /* TODO trying with blossoms art
         G_fill_circle(p1.x, p1.y, initial_radius);
         G_fill_circle(p2.x, p2.y, initial_radius);
         G_fill_circle(p3.x, p3.y, initial_radius);
         G_fill_circle(p4.x, p4.y, initial_radius);
+        */
+
+        draw_flower(p1.x, p1.y, 1);
+        draw_flower(p2.x, p2.y, 1);
+        draw_flower(p3.x, p3.y, 1);
+        draw_flower(p4.x, p4.y, 1);
 
         //populate array
         blossoms[(*index)] = p1;
@@ -58,7 +61,10 @@ void draw_blossoms(struct Point blossoms[], int size, int radius){
     int index = 0;
     while(index < size){
         G_rgb(0.98,0.85,0.86);
+        /* TODO testing with flower image
         G_fill_circle(blossoms[index].x, blossoms[index].y, radius);
+        */
+        draw_flower(blossoms[index].x, blossoms[index].y, 1);
         index++;
     }
 }
@@ -92,21 +98,7 @@ void select_random_indicies(int random[], int indicies[], int *available, int to
 
         count++;
     }
-/*
-        printf("Testing to see what is in indicies[] at %d : ", count);
-        for(int k = 0; k < *available; k++){
-             printf("%d ", indicies[k]);
-        }
-        printf("\n");
 
-
-
-    printf("Testing to see what we got in random IN FUNCTION: ");
-    for(int k = 0; k < total; k++){
-        printf("%d ", random[k]);
-   }
-   printf("\n");
-*/
 }
 
 //I need to have a list of blossoms that have been selected to fall, so the ones that are not yet moving, stay still

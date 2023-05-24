@@ -187,6 +187,9 @@ void tree (struct Point p0, struct Point p1, double distance, double percent, do
     G_line(p0.x, p0.y, p3.x, p3.y);
     G_line(p3.x, p3.y, p4.x, p4.y);
 
+    //double dis_p0_p2 = sqrt((p0.x - p2.x) * (p0.x - p2.x) + (p0.y - p2.y) * (p0.y - p2.y));
+    //G_fill_rectangle(p0.x, p0.y, dis_p0_p2, dis_p0_p2);
+
     //-----------------------------//
     //change x and y between p2 and p1
     change_x = p1.x - p2.x;
