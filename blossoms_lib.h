@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include "flower_lib.h"
 
+#define FRAME_SAVE 100
+
 struct RGB {
     double r, g, b;
 };
@@ -80,13 +82,19 @@ void draw_blossoms(struct Point blossoms[], int size, int radius){
 }
 
 //Draw all leaves stored in an array of coordinates
-void draw_leaves(struct Point blossoms[], int size, int radius){
+int draw_leaves(struct Point blossoms[], int size, int radius, int current_frame){
     int index = 0;
+    char frame_name[FRAME_SAVE]; //holds the frame_name
+    int frames = FRAME_SAVE;
+    sprintf(frame_name, "img%04d.bmp", current_frame); //create a sequential framing scheme for the mpeg
     while(index < size){
         G_rgb(74.0/255.0, 103.0/255.0, 65.0/255.0);
         G_fill_circle(blossoms[index].x, blossoms[index].y, radius);
         index++;
     }
+    G_save_to_bmp_file(frame_name);
+    current_frame++;
+    return current_frame;
 }
 
 

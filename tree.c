@@ -17,10 +17,6 @@ int main(){
 
     G_init_graphics (SWIDTH, SHEIGHT) ;  // interactive graphics
 
-    // clear the screen in a given color
-//    G_rgb (0.3, 0.3, 0.3) ; // dark gray
-//    G_clear () ;
-
     draw_background(SWIDTH, SHEIGHT);
 
     /* CODE HERE */
@@ -77,53 +73,16 @@ int main(){
     //what is the size of the blossoms array?
     int blossom_num = *index;
 
-    /* TODO
-    int blossom_num2 = *index2;
-    printf("size of blossoms: %d, size of blossoms2: %d", blossom_num, blossom_num2);
-    */
-
-    //animate blossoms growing on front tree
-    //We will get the final radius value back
-    //TODO don't need to grow while using flower turtle
-    //radius_size_front = grow_blossoms(blossoms, radius, target, increment, blossom_num);
-
-    /* TODO hold on back tree
-    //animate blossoms growing on back tree
-    //We will get the final radius value back
-    radius_size_back = grow_blossoms(blossoms2, radius, target, increment, blossom_num2);
-
-    struct RGB color = {0.4, 0.4, 0.4};
-    int target2= 0;
-    int inc = 1;
-    //TODO
-    //int shrunk = wilt(blossoms, radius_size_front, target2, inc, size, color, p0, p1, distance, percent, depth);
-    */
-
-    fall(blossoms, blossom_num, p0, p1, distance, percent, depth, radius_size_front);
-    //TODO how to save the state of the front tree to redraw it as the second runs
-    //grow leaves
-    /*
-    int c = 0;
-    int frames = 10;
-    while(c < frames){
-        G_rgb(0.3, 0.3, 0.3);
-        G_clear();
-        redraw_tree_no_blossoms(p0, p1, distance, percent, depth);
-        draw_blossoms(blossoms, size, radius_size_front);
-        tree(p0, p1, distance, percent, depth, blossoms, index); //front
-        draw_leaves(blossoms, size, c);
-        G_wait_key();
-        c++;
-    }
-    */
-    //fall(blossoms2, blossom_num2, p2, p3, distance2, percent2, depth2, radius_size_back);
+    int current_frame = 0;
+    current_frame = fall(blossoms, blossom_num, p0, p1, distance, percent, depth, radius_size_front);
 
     //reset blossoms back to ends of tree
     index_val = 0;
     index = &index_val;
     tree_save_blossoms(p0, p1, distance, percent, depth, blossoms, index); //front
-    draw_leaves(blossoms, *index, 5);
-    grow_blossoms(blossoms, 5.0, 75, 0.5, *index);
+
+    current_frame = draw_leaves(blossoms, *index, 5, current_frame);
+    grow_blossoms(blossoms, 5.0, 75, 0.5, *index, current_frame);
     G_wait_key();
 
 

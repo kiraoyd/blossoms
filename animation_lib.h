@@ -4,6 +4,7 @@
 int SWIDTH = 1000;
 int SHEIGHT = 1000;
 int ground = 75;
+#define FRAME_SAVE 100
 
 void draw_background(int width, int height){
     //Draw lines from the bottom of the screen to the top, in a gradient of color
@@ -104,21 +105,32 @@ void draw_background(int width, int height){
 }
 
 //Increase size of all blossoms and draw
-int grow_blossoms(struct Point blossoms[], double radius, int target, double increment, int size ){
+int grow_blossoms(struct Point blossoms[], double radius, int target, double increment, int size, int current_frame ){
+    char frame_name[FRAME_SAVE]; //holds the frame_name
+    int frames = FRAME_SAVE;
     while (radius < target){
         int count = 0;
+        sprintf(frame_name, "img%04d.bmp", current_frame); //create a sequential framing scheme for the mpeg
+        //draw all the blossoms/leaves
         while(count < size){
             if (count % 2 == 0){
                 G_rgb(74.0/255.0, 103.0/255.0, 65.0/255.0);
-            } else {
-                G_rgb(5.0/255.0, 247.0/255.0, 45.0/255.0);
+            } else if (count % 3 == 0){
+                G_rgb(9.0/255.0, 121.0/255.0, 105/255.0);
+            } else if (count % 5 == 0) {
+                G_rgb(79.0/255.0, 121.0/255.0, 66/255.0);
+            } else{
+                //G_rgb(170.0/255.0, 255.0/255.0, 0/255.0);
+                G_rgb(34.0/255.0, 139.0/255.0, 34.0/255.0);
             }
 
             G_fill_circle(blossoms[count].x, blossoms[count].y, radius);
             //draw_flower(blossoms[count].x, blossoms[count].y, 1);
             count++;
         }
-        G_wait_key();
+        //G_wait_key();
+        G_save_to_bmp_file(frame_name);
+        current_frame++;
         radius = radius + increment;
     }
     return radius;
@@ -145,7 +157,7 @@ int wilt(struct Point blossoms[], int start_radius, int target, int increment, i
 }
 
 
-void fall(struct Point blossoms[], int size, struct Point p0, struct Point p1, double distance, double percent, double depth, int radius){
+int fall(struct Point blossoms[], int size, struct Point p0, struct Point p1, double distance, double percent, double depth, int radius){
     //animate blossoms falling from front tree
     bool hanging = true;
     double rate = 20.0;
@@ -167,7 +179,12 @@ void fall(struct Point blossoms[], int size, struct Point p0, struct Point p1, d
 
     //for each blossom, until we reach the ground, redraw the blossoms at a lower point
     int next_index = 0;
+    int count = 0;
+    char frame_name[FRAME_SAVE]; //holds the frame_name
+    int frames = FRAME_SAVE;
     while(hanging){
+       sprintf(frame_name, "img%04d.bmp", count); //create a sequential framing scheme for the mpeg
+
 //        G_rgb(0.3, 0.3, 0.3);
         //G_clear();
         draw_background(SWIDTH, SHEIGHT);
@@ -214,9 +231,11 @@ void fall(struct Point blossoms[], int size, struct Point p0, struct Point p1, d
           }
           index++;
        }
-        G_wait_key();
-
+        //G_wait_key();
+        G_save_to_bmp_file(frame_name);
+        count++;
     }
+    return count;
 
 }
 
