@@ -1,13 +1,119 @@
 #include "tree_lib.h"
 #include <math.h>
 
+int SWIDTH = 1000;
+int SHEIGHT = 1000;
+int ground = 75;
+
+void draw_background(int width, int height){
+    //Draw lines from the bottom of the screen to the top, in a gradient of color
+    double r,g,b, rw,gw,bw,rb,gb,bb;
+    rw = 1.0;
+    gw = 1.0;
+    bw = 1.0;
+
+//    rb = 52.0/255.0;
+//    gb = 79.0/255.0;
+//    bb = 235.0/255.0;
+
+    rb = 13.0/255.0;
+    gb = 20.0/255.0;
+    bb = 94.0/255.0;
+
+    //start with while
+    r = rw;
+    g = gw;
+    b = bw;
+
+    double blend_factor = 0; //0 is closer to white, 1 to blue
+    int y = 0;
+    int x_start = 0;
+    int x_end = width - 1;
+
+    G_clear();
+    //fill screen from bottom up
+    while (y < height){
+        //blend colors
+        r = (1-blend_factor) * rb + blend_factor* rw;
+        g = (1-blend_factor) * gb + blend_factor* gw;
+        b = (1-blend_factor) * bb + blend_factor* bw;
+        //draw line
+        G_rgb(r,g,b);
+        G_line(x_start, y, x_end, y);
+        blend_factor += 0.0003;
+        y += 1;
+    }
+
+    //draw ground
+    double rg,gg,bg; //for brown ground
+
+    rg = 56.0/255.0;
+    gg = 37.0/255.0;
+    bg = 38.0/255.0;
+
+    //start with white
+    r = rw;
+    g = gw;
+    b = bw;
+    blend_factor = 0; //0 is closer to white, 1 to blue
+    y = 0;
+    x_start = 0;
+    x_end = width - 1;
+    while (y < 150){
+        //blend colors
+        r = (1-blend_factor) * rg + blend_factor* rw;
+        g = (1-blend_factor) * gg + blend_factor* gw;
+        b = (1-blend_factor) * bg + blend_factor* bw;
+        //draw line
+        G_rgb(r,g,b);
+        G_line(x_start, y, x_end, y);
+        blend_factor += 0.003;
+        y += 1;
+    }
+
+     //draw sun
+        double rs,gs,bs; //for yellow sun
+
+        rs = 247.0/255.0;
+        gs = 215.0/255.0;
+        bs = 5.0/255.0;
+
+        //start with white
+        r = rw;
+        g = gw;
+        b = bw;
+        blend_factor = 0; //0 is closer to white, 1 to yellow
+        y = 0;
+        double x_center = 800;
+        double y_center = 800;
+        int radius = 50;
+        while (radius > 0){
+            //blend colors
+            r = (1-blend_factor) * rw + blend_factor* rs;
+            g = (1-blend_factor) * gw + blend_factor* gs;
+            b = (1-blend_factor) * bw + blend_factor* bs;
+            //draw line
+            G_rgb(r,g,b);
+            G_circle(x_center, y_center, radius);
+            blend_factor += 0.05;
+            radius -= 1;
+        }
+
+
+
+}
 
 //Increase size of all blossoms and draw
 int grow_blossoms(struct Point blossoms[], double radius, int target, double increment, int size ){
     while (radius < target){
         int count = 0;
         while(count < size){
-            G_rgb(74.0/255.0, 103.0/255.0, 65.0/255.0);
+            if (count % 2 == 0){
+                G_rgb(74.0/255.0, 103.0/255.0, 65.0/255.0);
+            } else {
+                G_rgb(5.0/255.0, 247.0/255.0, 45.0/255.0);
+            }
+
             G_fill_circle(blossoms[count].x, blossoms[count].y, radius);
             //draw_flower(blossoms[count].x, blossoms[count].y, 1);
             count++;
@@ -62,8 +168,10 @@ void fall(struct Point blossoms[], int size, struct Point p0, struct Point p1, d
     //for each blossom, until we reach the ground, redraw the blossoms at a lower point
     int next_index = 0;
     while(hanging){
-        G_rgb(0.3, 0.3, 0.3);
-        G_clear();
+//        G_rgb(0.3, 0.3, 0.3);
+        //G_clear();
+        draw_background(SWIDTH, SHEIGHT);
+
         redraw_tree_no_blossoms(p0, p1, distance, percent, depth);
 
         //time to make the blossoms fall
@@ -79,7 +187,7 @@ void fall(struct Point blossoms[], int size, struct Point p0, struct Point p1, d
        while(index < size){
           //first be sure we draw all the stationary blossoms
           int draw = is_falling(to_fall, index, next_index);
-          if(blossoms[index].y <= 0){
+          if(blossoms[index].y <= ground){
                 //any blossom that has reached the ground should be drawn as stationary
                 draw = 0;
           }
@@ -101,7 +209,7 @@ void fall(struct Point blossoms[], int size, struct Point p0, struct Point p1, d
           }
 
           //update hanging to be true as long if at least one blossom hasn't reached the ground, keeps us in the loop
-          if(blossoms[index].y > 0){
+          if(blossoms[index].y > ground){
              hanging = true;
           }
           index++;

@@ -7,23 +7,21 @@
 
 #include "animation_lib.h" //library of methods
 
-
 #define PI 3.14159265
 
 int main(){
 
-
     //Declare variables here
     //USE DOUBLES!!!!! NOT INTS, except for array accessors
-    int swidth, sheight ;
     double x0, y0, x1, y1, x2, y2, length, adj, opp;
 
-    swidth = 1000 ;  sheight = 1000 ;
-    G_init_graphics (swidth,sheight) ;  // interactive graphics
+    G_init_graphics (SWIDTH, SHEIGHT) ;  // interactive graphics
 
     // clear the screen in a given color
-    G_rgb (0.3, 0.3, 0.3) ; // dark gray
-    G_clear () ;
+//    G_rgb (0.3, 0.3, 0.3) ; // dark gray
+//    G_clear () ;
+
+    draw_background(SWIDTH, SHEIGHT);
 
     /* CODE HERE */
 
